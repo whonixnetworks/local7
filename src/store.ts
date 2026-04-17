@@ -16,7 +16,7 @@ export function store(input: StoreInput): Document {
   const contentToon = jsonToToon(input.data);
   const contentText = extractText(input.data);
   const expiresAt = input.expiresInSeconds
-    ? new Date(Date.now() + input.expiresInSeconds * 1000).toISOString()
+    ? new Date(Date.now() + input.expiresInSeconds * 1000).toISOString().replace('T', ' ').replace(/\.\d{3}Z$/, '')
     : null;
 
   if (key) {

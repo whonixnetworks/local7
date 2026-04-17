@@ -4,7 +4,7 @@
 
 Local, self-hosted, token-efficient context storage for AI agents. A fast alternative to Context7 that runs entirely on your machine — store personal preferences, API documentation, web research, and any structured data. Retrieves data as [TOON](https://github.com/toon-format/toon) format to cut token usage by ~40-60%.
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 ---
@@ -258,26 +258,40 @@ node dist/cli.js cleanup
 
 ## Token Savings
 
-TOON format reduces token usage by eliminating repeated keys and using tabular layouts for arrays of uniform objects:
+TOON format reduces token usage by eliminating repeated keys and using tabular layouts for arrays of uniform objects.
+
+### Real Benchmark Results (8 use cases, 2026-04-17)
+
+| Use Case | JSON chars | TOON chars | Token Reduction |
+|----------|-----------|-----------|----------------|
+| User Preferences | 204 | 177 | 15.6% |
+| API Documentation | 2,232 | 1,745 | 25.0% |
+| Project Knowledge Base | 1,076 | 1,061 | 5.8% |
+| Search Results Cache | 1,863 | 1,563 | 18.6% |
+| Web Page Content | 1,619 | 1,479 | 9.8% |
+| Configuration Data | 712 | 705 | 4.4% |
+| **50-User Tabular Data** | **7,856** | **3,420** | **59.2%** |
+| Env Variables Template | 547 | 509 | 9.0% |
+| **TOTAL** | **16,109** | **10,659** | **36.7%** |
+
+> **1,875 tokens saved** across 8 test cases. Tabular data (arrays of objects) sees up to 59.2% reduction.
+
+### Format Comparison Example
 
 ```text
-JSON:   {"users":[{"id":1,"name":"Alice","role":"admin"},{"id":2,"name":"Bob","role":"user"}]}
-TOON:   users[2]{id,name,role}:
-          1,Alice,admin
-          2,Bob,user
+JSON (7,856 chars, ~2,510 tokens):
+  {"users":[{"id":1,"username":"user_1","email":"user1@example.com","role":"admin"},...]}
 
-Result: ~68% fewer characters, ~40-60% fewer tokens
+TOON (3,420 chars, ~1,024 tokens):
+  users[50]{id,username,email,role}:
+    1,user_1,user1@example.com,admin
+    2,user_2,user2@example.com,editor
+    ...
+
+Result: 59.2% fewer tokens for tabular data
 ```
 
-Benchmarks from the [TOON specification](https://github.com/toon-format/toon):
-
-| Format | Tokens | Accuracy |
-|--------|--------|----------|
-| TOON | 2,759 | 76.4% |
-| JSON compact | 3,104 | 73.7% |
-| JSON | 4,587 | 75.0% |
-| YAML | 3,749 | 74.5% |
-| XML | 5,221 | 72.1% |
+See [example.md](example.md) for full proof with real format comparisons and model compatibility tests.
 
 ---
 

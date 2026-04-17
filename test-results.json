@@ -1,0 +1,116 @@
+{
+  "timestamp": "2026-04-17T15:08:04.692Z",
+  "results": [
+    {
+      "model": "google/gemma-3-27b-it:free",
+      "test": "Store developer profile",
+      "status": "FAILED",
+      "error": "No endpoints found that support tool use. Try disabling \"local7_store\". To learn more about provider routing, visit: https://openrouter.ai/docs/guides/routing/provider-selection"
+    },
+    {
+      "model": "google/gemma-3-27b-it:free",
+      "test": "Retrieve developer profile",
+      "status": "FAILED",
+      "error": "No endpoints found that support tool use. Try disabling \"local7_store\". To learn more about provider routing, visit: https://openrouter.ai/docs/guides/routing/provider-selection"
+    },
+    {
+      "model": "meta-llama/llama-3.3-70b-instruct:free",
+      "test": "Store project conventions",
+      "status": "FAILED",
+      "error": "Provider returned error"
+    },
+    {
+      "model": "meta-llama/llama-3.3-70b-instruct:free",
+      "test": "Search for conventions",
+      "status": "FAILED",
+      "error": "Provider returned error"
+    },
+    {
+      "model": "qwen/qwen3-next-80b-a3b-instruct:free",
+      "test": "List all documents",
+      "status": "FAILED",
+      "error": "Provider returned error"
+    },
+    {
+      "model": "qwen/qwen3-next-80b-a3b-instruct:free",
+      "test": "Store and retrieve API cache",
+      "status": "FAILED",
+      "error": "Provider returned error"
+    },
+    {
+      "model": "deepseek/deepseek-chat",
+      "test": "Store user preferences",
+      "status": "PASS",
+      "tool": "local7_store",
+      "args": {
+        "key": "user_prefs",
+        "type": "preference",
+        "tags": [
+          "personal",
+          "settings"
+        ],
+        "data": {
+          "theme": "dark",
+          "editor": "vim",
+          "shell": "zsh",
+          "language": "TypeScript"
+        }
+      },
+      "output": "Stored: key=user_prefs type=preference"
+    },
+    {
+      "model": "deepseek/deepseek-chat",
+      "test": "Store with TTL",
+      "status": "PASS",
+      "tool": "local7_store",
+      "args": {
+        "data": {
+          "query": "React Server Components"
+        },
+        "expiresInSeconds": 3600,
+        "key": "react_sc_search",
+        "tags": [
+          "react",
+          "server-components"
+        ],
+        "type": "search_result"
+      },
+      "output": "Stored: key=react_sc_search type=search_result"
+    },
+    {
+      "model": "deepseek/deepseek-chat",
+      "test": "Search across all data",
+      "status": "PASS",
+      "tool": "local7_search",
+      "args": {
+        "query": "TypeScript developer"
+      },
+      "output": "No results."
+    },
+    {
+      "model": "deepseek/deepseek-chat",
+      "test": "List preferences only",
+      "status": "PASS",
+      "tool": "local7_list",
+      "args": {
+        "type": "preference"
+      },
+      "output": "1. user_prefs | preference [personal, settings] | \"user_prefs\""
+    },
+    {
+      "model": "deepseek/deepseek-chat",
+      "test": "Delete temp data and cleanup",
+      "status": "PASS",
+      "tool": "local7_delete",
+      "args": {
+        "key": "react_sc_search"
+      },
+      "output": "Deleted: react_sc_search"
+    }
+  ],
+  "summary": {
+    "total": 11,
+    "passed": 5,
+    "failed": 6
+  }
+}
